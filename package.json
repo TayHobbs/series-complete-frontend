@@ -1,0 +1,33 @@
+{
+  "name": "series-complete-frontend",
+  "version": "0.0.1",
+  "description": "Frontend for series-complete",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.4.3",
+    "express": "^4.4.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TayHobbs/series-complete-frontend.git"
+  },
+  "keywords": [
+    "react",
+    "tutorial",
+    "comment",
+    "example"
+  ],
+  "author": "TayHobbs",
+  "bugs": {
+    "url": "https://github.com/TayHobbs/series-complete-frontend/issues"
+  },
+  "homepage": "https://github.com/TayHobbs/series-complete-frontend/issues",
+  "engines" : {
+    "node" : "0.12.x"
+  }
+}
