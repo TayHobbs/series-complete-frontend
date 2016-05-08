@@ -1,0 +1,8 @@
+{
+  "name": "series-complete-frontend",
+  "dependencies": {
+    "jquery": "^2.2.3",
+    "lodash": "~4.11.2",
+    "fauxjax": "~1.3.1"
+  }
+}
