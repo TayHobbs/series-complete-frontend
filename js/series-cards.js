@@ -8,11 +8,11 @@ export default React.createClass({
     return {
       title: '',
       series: [],
-      seriesList: []
+      seriesSets: []
     };
   },
   componentDidMount() {
-    this.ajax = $.get('/series', (result) => this.setState({seriesList: result}));
+    this.ajax = $.get('/series', (result) => this.setState({seriesSets: result}));
   },
   componentWillUnmount() {
     this.ajax.abort();
@@ -20,12 +20,20 @@ export default React.createClass({
 
   addSeries(e) {
     e.preventDefault();
-    let seriesList = this.state.seriesList;
-    seriesList.push({title: this.state.title, series: this.state.series});
-    this.setState({seriesList: seriesList});
+    let seriesSets = this.state.seriesSets;
+    seriesSets.push(
+      {
+        title: this.state.title,
+        series: this.state.series.split(',').map((instalment) => { return {name: instalment, completed: false}; })
+      }
+    );
+    this.setState({seriesSets: seriesSets});
   },
   handleTitle: function(event) {
     this.setState({title: event.target.value.substr(0, 140)});
+  },
+  handleSeries: function(event) {
+    this.setState({series: event.target.value.substr(0, 140)});
   },
   handleType(val) {
     this.setState({type: val});
@@ -38,8 +46,8 @@ export default React.createClass({
       {value: 'book', label: 'Book'},
     ];
     var render = [];
-    for (var i=0; i < this.state.seriesList.length; i++) {
-      render.push(<SeriesCard key={i} data={this.state.seriesList[i]} />);
+    for (var i=0; i < this.state.seriesSets.length; i++) {
+      render.push(<SeriesCard key={this.state.seriesSets[i].id} data={this.state.seriesSets[i]} />);
     }
     return (
       <div>
@@ -56,6 +64,8 @@ export default React.createClass({
               options={options}
               onChange={this.handleType}
               />
+            <label for='series'>Series: (seperated by comma)</label>
+            <input type='text' id='series' onChange={this.handleSeries} value={this.state.series} placeholder='Series' />
             <button id='submit' type='submit'>Submit</button>
           </form>
         </div>
