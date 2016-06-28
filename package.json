@@ -25,6 +25,7 @@
     "eslint-plugin-react": "^5.0.1",
     "http-server": "^0.8.5",
     "jest-cli": "*",
+    "jquery": "^3.0.0",
     "jsdom": "^9.2.1",
     "mocha": "^2.5.3",
     "react-addons-test-utils": "^15.0.1",
