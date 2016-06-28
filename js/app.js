@@ -12,6 +12,7 @@ $.fauxjax.new({
   },
   response: {
     content: [{
+      id: 6789,
       title: 'Harry Potter',
       series: [
         {'name': 'Philosopher\'s Stone', 'completed': true},
