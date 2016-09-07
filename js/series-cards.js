@@ -27,6 +27,18 @@ export default React.createClass({
         series: this.state.series.split(',').map((instalment) => { return {name: instalment, completed: false}; })
       }
     );
+    $.ajax({
+      method: 'POST',
+      url: 'http://localhost:3000/series',
+      contentType: 'application/json',
+      data: JSON.stringify({
+        series: {
+          title: this.state.title,
+          complete: false,
+          installments: this.state.series.split(',').map((instalment) => { return {name: instalment, complete: false}; })
+        }
+      })
+    });
     this.setState({seriesSets: seriesSets});
   },
   handleTitle: function(event) {
