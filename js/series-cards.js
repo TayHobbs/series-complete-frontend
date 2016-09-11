@@ -12,7 +12,7 @@ export default React.createClass({
     };
   },
   componentDidMount() {
-    this.ajax = $.get('/series', (result) => this.setState({seriesSets: result}));
+    this.ajax = $.get('http://localhost:3000/series', (result) => this.setState({seriesSets: result.series}));
   },
   componentWillUnmount() {
     this.ajax.abort();
