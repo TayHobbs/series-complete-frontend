@@ -50,6 +50,19 @@ export default React.createClass({
   handleType(val) {
     this.setState({type: val});
   },
+  handleComplete(installment) {
+    $.ajax({
+      method: 'PATCH',
+      url: `http://localhost:3000/installments/${installment.id}`,
+      contentType: 'application/json',
+      data: JSON.stringify({
+        installment: {
+          id: installment.id,
+          complete: !installment.complete
+        }
+      })
+    });
+  },
 
   render() {
     const options = [
@@ -59,7 +72,7 @@ export default React.createClass({
     ];
     var render = [];
     for (var i=0; i < this.state.seriesSets.length; i++) {
-      render.push(<SeriesCard key={this.state.seriesSets[i].id} data={this.state.seriesSets[i]} />);
+      render.push(<SeriesCard key={this.state.seriesSets[i].id} data={this.state.seriesSets[i]} handleComplete={this.handleComplete} />);
     }
     return (
       <div>

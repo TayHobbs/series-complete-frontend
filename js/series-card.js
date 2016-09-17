@@ -5,7 +5,7 @@ export default React.createClass({
     var render = [];
     this.props.data.installments.forEach((installment) => {
       let seriesId = `${this.props.data.title.replace(/ /, '-').toLowerCase()}-series-${installment.id}`;
-      render.push(<div id={seriesId} key={installment.name}><input type="checkbox" checked={installment.checked} /> {installment.name}</div>);
+      render.push(<div id={seriesId} key={installment.name}><input type="checkbox" defaultChecked={installment.complete} onChange={() => this.props.handleComplete(installment)}/> {installment.name}</div>);
     });
     return (
       <div>
