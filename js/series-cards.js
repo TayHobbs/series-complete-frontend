@@ -7,7 +7,7 @@ export default React.createClass({
   getInitialState() {
     return {
       title: '',
-      series: [],
+      installments: [],
       seriesSets: []
     };
   },
@@ -24,7 +24,7 @@ export default React.createClass({
     seriesSets.push(
       {
         title: this.state.title,
-        series: this.state.series.split(',').map((instalment) => { return {name: instalment, completed: false}; })
+        installments: this.state.installments.split(',').map((instalment) => { return {name: instalment, complete: false}; })
       }
     );
     $.ajax({
@@ -34,8 +34,7 @@ export default React.createClass({
       data: JSON.stringify({
         series: {
           title: this.state.title,
-          complete: false,
-          installments: this.state.series.split(',').map((instalment) => { return {name: instalment, complete: false}; })
+          installments: this.state.installments.split(',').map((instalment) => { return {name: instalment, complete: false}; })
         }
       })
     });
@@ -44,8 +43,8 @@ export default React.createClass({
   handleTitle: function(event) {
     this.setState({title: event.target.value.substr(0, 140)});
   },
-  handleSeries: function(event) {
-    this.setState({series: event.target.value.substr(0, 140)});
+  handleInstallments: function(event) {
+    this.setState({installments: event.target.value.substr(0, 140)});
   },
   handleType(val) {
     this.setState({type: val});
@@ -63,6 +62,13 @@ export default React.createClass({
       })
     });
   },
+  handleDelete(installment) {
+    $.ajax({
+      method: 'DELETE',
+      url: `http://localhost:3000/installments/${installment.id}`,
+      contentType: 'application/json'
+    });
+  },
 
   render() {
     const options = [
@@ -72,7 +78,7 @@ export default React.createClass({
     ];
     var render = [];
     for (var i=0; i < this.state.seriesSets.length; i++) {
-      render.push(<SeriesCard key={this.state.seriesSets[i].id} data={this.state.seriesSets[i]} handleComplete={this.handleComplete} />);
+      render.push(<SeriesCard key={this.state.seriesSets[i].id} data={this.state.seriesSets[i]} handleDelete={this.handleDelete} handleComplete={this.handleComplete} />);
     }
     return (
       <div>
@@ -89,8 +95,8 @@ export default React.createClass({
               options={options}
               onChange={this.handleType}
               />
-            <label for='series'>Series: (seperated by comma)</label>
-            <input type='text' id='series' onChange={this.handleSeries} value={this.state.series} placeholder='Series' />
+            <label for='series'>Installments: (seperated by comma)</label>
+            <input type='text' id='installment' onChange={this.handleInstallments} value={this.state.installments} placeholder='Installments' />
             <button id='submit' type='submit'>Submit</button>
           </form>
         </div>
