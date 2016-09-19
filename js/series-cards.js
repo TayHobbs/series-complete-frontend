@@ -62,7 +62,8 @@ export default React.createClass({
       })
     });
   },
-  handleDelete(installment) {
+  handleDelete(seriesIdx, installment, installmentIdx) {
+    this.state.seriesSets[seriesIdx].installments.splice(installmentIdx, 1);
     $.ajax({
       method: 'DELETE',
       url: `http://localhost:3000/installments/${installment.id}`,
@@ -78,7 +79,7 @@ export default React.createClass({
     ];
     var render = [];
     for (var i=0; i < this.state.seriesSets.length; i++) {
-      render.push(<SeriesCard key={this.state.seriesSets[i].id} data={this.state.seriesSets[i]} handleDelete={this.handleDelete} handleComplete={this.handleComplete} />);
+      render.push(<SeriesCard key={this.state.seriesSets[i].id} idx={i} data={this.state.seriesSets[i]} handleDelete={this.handleDelete} handleComplete={this.handleComplete} />);
     }
     return (
       <div>

@@ -72,4 +72,16 @@ describe('<SeriesCard/>', function () {
     expect(wrapper.state().seriesSets[0].installments).to.have.length(2);
     expect(wrapper.state().seriesSets[0].installments).to.have.eql([{name: 'Fellowship', complete: false}, {name: 'Two Towers', complete: false}]);
   });
+
+  it('removes installment from list when delete button clicked', () => {
+    var data = {
+      title: '',
+      installments: [],
+    };
+    const wrapper = mount(<SeriesCards />);
+    wrapper.setState({seriesSets: [{title: 'Lord of the Rings', installments: [{name: 'Fellowship', complete: false, id: 1}]}]});
+    expect(wrapper.state().seriesSets[0].installments).to.have.length(1);
+    wrapper.find('#delete-button').simulate('click');
+    expect(wrapper.state().seriesSets[0].installments).to.have.length(0);
+  });
 });
