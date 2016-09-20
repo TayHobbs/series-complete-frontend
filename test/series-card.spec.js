@@ -81,7 +81,21 @@ describe('<SeriesCard/>', function () {
     const wrapper = mount(<SeriesCards />);
     wrapper.setState({seriesSets: [{title: 'Lord of the Rings', installments: [{name: 'Fellowship', complete: false, id: 1}]}]});
     expect(wrapper.state().seriesSets[0].installments).to.have.length(1);
-    wrapper.find('#delete-button').simulate('click');
+    wrapper.find('.delete-button').simulate('click');
     expect(wrapper.state().seriesSets[0].installments).to.have.length(0);
   });
+
+  it('changes installment name when edited', () => {
+    var data = {
+      title: '',
+      installments: [],
+    };
+    const wrapper = mount(<SeriesCards />);
+    wrapper.setState({seriesSets: [{title: 'Lord of the Rings', installments: [{name: 'Fellowhip', complete: false, id: 1}]}]});
+    expect(wrapper.state().seriesSets[0].installments).to.have.length(1);
+    wrapper.find('.edit-button').simulate('click');
+    wrapper.find('.edit-input').simulate('change', {target: {value: 'Fellowship'}});
+    expect(wrapper.state().seriesSets[0].installments[0].name).to.have.eql('Fellowship');
+  });
+
 });

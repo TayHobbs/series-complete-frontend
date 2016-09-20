@@ -70,6 +70,18 @@ export default React.createClass({
       contentType: 'application/json'
     });
   },
+  handleEdit(seriesIdx, installmentIdx, installment) {
+    this.state.seriesSets[seriesIdx].installments[installmentIdx].editing = true;
+    this.forceUpdate();
+  },
+  handleSave(seriesIdx, installmentIdx, name) {
+    this.state.seriesSets[seriesIdx].installments[installmentIdx].editing = false;
+    this.forceUpdate();
+  },
+  handleNameEdit(seriesIdx, installmentIdx, event) {
+    this.state.seriesSets[seriesIdx].installments[installmentIdx].name = event.target.value;
+    this.forceUpdate();
+  },
 
   render() {
     const options = [
@@ -79,7 +91,7 @@ export default React.createClass({
     ];
     var render = [];
     for (var i=0; i < this.state.seriesSets.length; i++) {
-      render.push(<SeriesCard key={this.state.seriesSets[i].id} idx={i} data={this.state.seriesSets[i]} handleDelete={this.handleDelete} handleComplete={this.handleComplete} />);
+      render.push(<SeriesCard key={this.state.seriesSets[i].id} idx={i} data={this.state.seriesSets[i]} handleNameEdit={this.handleNameEdit} handleSave={this.handleSave} handleEdit={this.handleEdit} handleDelete={this.handleDelete} handleComplete={this.handleComplete} />);
     }
     return (
       <div>
