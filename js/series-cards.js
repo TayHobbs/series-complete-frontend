@@ -106,9 +106,9 @@ export default React.createClass({
         <div>
           <h3>Create a New Series</h3>
           <form onSubmit={this.addSeries}>
-            <label for='title'>Title:</label>
+            <label htmlFor='title'>Title:</label>
             <input type='text' id='title' onChange={this.handleTitle} value={this.state.title} placeholder='Title' />
-            <label for='type'>Type:</label>
+            <label htmlFor='type'>Type:</label>
             <Select
               name='type'
               value={this.state.type}
