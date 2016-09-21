@@ -82,6 +82,13 @@ export default React.createClass({
     this.state.seriesSets[seriesIdx].installments[installmentIdx].name = event.target.value;
     this.forceUpdate();
   },
+  handleNewInput(event) {
+    this.setState({newInstallment: event.target.value})
+  },
+  addInstallment(seriesIdx) {
+    this.state.seriesSets[seriesIdx].installments.push({name: this.state.newInstallment, complete: false});
+    this.forceUpdate();
+  },
 
   render() {
     const options = [
@@ -91,7 +98,7 @@ export default React.createClass({
     ];
     var render = [];
     for (var i=0; i < this.state.seriesSets.length; i++) {
-      render.push(<SeriesCard key={this.state.seriesSets[i].id} idx={i} data={this.state.seriesSets[i]} handleNameEdit={this.handleNameEdit} handleSave={this.handleSave} handleEdit={this.handleEdit} handleDelete={this.handleDelete} handleComplete={this.handleComplete} />);
+      render.push(<SeriesCard key={this.state.seriesSets[i].id} idx={i} data={this.state.seriesSets[i]} addInstallment={this.addInstallment} handleNewInput={this.handleNewInput} handleNameEdit={this.handleNewInput} handleNameEdit={this.handleNameEdit} handleSave={this.handleSave} handleEdit={this.handleEdit} handleDelete={this.handleDelete} handleComplete={this.handleComplete} />);
     }
     return (
       <div>

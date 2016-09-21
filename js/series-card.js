@@ -27,6 +27,9 @@ export default React.createClass({
           <div id='title'>{this.props.data.title}</div>
           <br />
           {render}
+          Add Installment:
+          <input type="text" id="add-input" onChange={this.props.handleNewInput} />
+          <input type="button" id="add-button" onClick={() => this.props.addInstallment(this.props.idx)} value="Save"/>
         </div>
       </div>
     )

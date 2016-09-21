@@ -98,4 +98,17 @@ describe('<SeriesCard/>', function () {
     expect(wrapper.state().seriesSets[0].installments[0].name).to.have.eql('Fellowship');
   });
 
+  it('allows you to add an installment to a series', () => {
+    var data = {
+      title: '',
+      installments: [],
+    };
+    const wrapper = mount(<SeriesCards />);
+    wrapper.setState({seriesSets: [{title: 'Lord of the Rings', installments: [{name: 'Fellowhip', complete: false, id: 1}]}]});
+    expect(wrapper.state().seriesSets[0].installments).to.have.length(1);
+    wrapper.find('#add-input').simulate('change', {target: {value: 'Two Towers'}});
+    wrapper.find('#add-button').simulate('click');
+    expect(wrapper.state().seriesSets[0].installments).to.have.length(2);
+  });
+
 });
