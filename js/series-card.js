@@ -4,18 +4,19 @@ export default React.createClass({
   render() {
     var render = [];
     this.props.data.installments.forEach((installment, idx) => {
-      var editButton;
-      let seriesId = `${this.props.data.title.replace(/ /, '-').toLowerCase()}-series-${installment.id}`;
+      var editButton, editingInputState;
       if (installment.editing) {
-        editButton = <input type="button" className="save-button" onClick={() => this.props.handleSave(this.props.idx, idx, this.editValue)} value="Save" />
+        editButton = <input type="button" className="save-button" onClick={() => this.props.handleEditToggle(this.props.idx, idx, installment)} value="Save" />;
+        editingInputState = <input type="text" className="edit-input" onChange={(event) => this.props.handleNameEdit(this.props.idx, idx, event)} value={installment.name}/>;
       } else {
-        editButton = <input type="button" className="edit-button" onClick={() => this.props.handleEdit(this.props.idx, idx, installment)} value="Edit" />
+        editButton = <input type="button" className="edit-button" onClick={() => this.props.handleEditToggle(this.props.idx, idx, installment)} value="Edit" />;
+        editingInputState =  installment.name;
       }
 
       render.push(
-        <div id={seriesId} key={installment.name}>
+        <div id={installment.name.replace(/ /, '-').toLowerCase()} key={installment.name}>
           <input type="checkbox" defaultChecked={installment.complete} onChange={() => this.props.handleComplete(installment)}/>
-          {installment.editing ? <input type="text" className="edit-input" onChange={(event) => this.props.handleNameEdit(this.props.idx, idx, event)} value={installment.name}/> : installment.name }
+          {editingInputState}
           <input type="button" className="delete-button" onClick={() => this.props.handleDelete(this.props.idx, installment, idx)} value="Delete" />
           {editButton}
         </div>
@@ -28,7 +29,7 @@ export default React.createClass({
           <br />
           {render}
           Add Installment:
-          <input type="text" id="add-input" onChange={this.props.handleNewInput} />
+          <input type="text" id="add-input" onChange={(event) => this.props.handleInputChange('newInstallment', event)} />
           <input type="button" id="add-button" onClick={() => this.props.addInstallment(this.props.idx)} value="Save"/>
         </div>
       </div>

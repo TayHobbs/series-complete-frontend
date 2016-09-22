@@ -22,17 +22,17 @@ describe('<SeriesCard/>', function () {
     expect(wrapper.find('#title').text()).to.equal('Harry Potter');
   });
 
-  it('gives each series a unique id using the title', () => {
+  it('gives each series a unique id using the name', () => {
     var data = {
       title: 'Harry Potter',
       installments: [
         {id: 1, name: 'Philosopher Stone', complete: true},
-        {id: 2, ame: 'Deathly Hallows', complete: false}
+        {id: 2, name: 'Deathly Hallows', complete: false}
       ]
     };
     const wrapper = mount(<SeriesCard data={data}/>);
-    expect(wrapper.find('#harry-potter-series-1')).to.have.length(1);
-    expect(wrapper.find('#harry-potter-series-2')).to.have.length(1);
+    expect(wrapper.find('#philosopher-stone')).to.have.length(1);
+    expect(wrapper.find('#deathly-hallows')).to.have.length(1);
   });
 
   it('renders the list of series from the passed data', () => {
@@ -44,15 +44,11 @@ describe('<SeriesCard/>', function () {
       ]
     };
     const wrapper = mount(<SeriesCard data={data}/>);
-    expect(wrapper.find('#harry-potter-series-1').text().trim()).to.equal('Philosopher Stone');
-    expect(wrapper.find('#harry-potter-series-2').text().trim()).to.equal('Deathly Hallows');
+    expect(wrapper.find('#philosopher-stone').text().trim()).to.equal('Philosopher Stone');
+    expect(wrapper.find('#deathly-hallows').text().trim()).to.equal('Deathly Hallows');
   });
 
   it('adds a new title when form submitted', () => {
-    var data = {
-      title: '',
-      installments: [],
-    };
     const wrapper = mount(<SeriesCards />);
     wrapper.setState({title: 'Lord of the Rings', installments: 'Fellowship'});
     wrapper.find('form').simulate('submit');
@@ -62,10 +58,6 @@ describe('<SeriesCard/>', function () {
   });
 
   it('splits titles on comma when form submitted', () => {
-    var data = {
-      title: '',
-      installments: [],
-    };
     const wrapper = mount(<SeriesCards />);
     wrapper.setState({title: 'Lord of the Rings', installments: 'Fellowship,Two Towers'});
     wrapper.find('form').simulate('submit');
@@ -74,10 +66,6 @@ describe('<SeriesCard/>', function () {
   });
 
   it('removes installment from list when delete button clicked', () => {
-    var data = {
-      title: '',
-      installments: [],
-    };
     const wrapper = mount(<SeriesCards />);
     wrapper.setState({seriesSets: [{title: 'Lord of the Rings', installments: [{name: 'Fellowship', complete: false, id: 1}]}]});
     expect(wrapper.state().seriesSets[0].installments).to.have.length(1);
@@ -86,10 +74,6 @@ describe('<SeriesCard/>', function () {
   });
 
   it('changes installment name when edited', () => {
-    var data = {
-      title: '',
-      installments: [],
-    };
     const wrapper = mount(<SeriesCards />);
     wrapper.setState({seriesSets: [{title: 'Lord of the Rings', installments: [{name: 'Fellowhip', complete: false, id: 1}]}]});
     expect(wrapper.state().seriesSets[0].installments).to.have.length(1);
@@ -99,10 +83,6 @@ describe('<SeriesCard/>', function () {
   });
 
   it('allows you to add an installment to a series', () => {
-    var data = {
-      title: '',
-      installments: [],
-    };
     const wrapper = mount(<SeriesCards />);
     wrapper.setState({seriesSets: [{title: 'Lord of the Rings', installments: [{name: 'Fellowhip', complete: false, id: 1}]}]});
     expect(wrapper.state().seriesSets[0].installments).to.have.length(1);

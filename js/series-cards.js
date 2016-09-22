@@ -1,5 +1,6 @@
 import React from 'react';
 import Select from 'react-select';
+import update from 'react-addons-update';
 
 import SeriesCard from './series-card.js';
 
@@ -40,15 +41,19 @@ export default React.createClass({
     });
     this.setState({seriesSets: seriesSets});
   },
-  handleTitle: function(event) {
+
+  handleInputChange(key, event) {
+    this.setState({[key]: event.target.value.substr(0, 140)});
+  },
+
+  handleTitle(event) {
     this.setState({title: event.target.value.substr(0, 140)});
   },
-  handleInstallments: function(event) {
-    this.setState({installments: event.target.value.substr(0, 140)});
-  },
+
   handleType(val) {
     this.setState({type: val});
   },
+
   handleComplete(installment) {
     $.ajax({
       method: 'PATCH',
@@ -62,6 +67,7 @@ export default React.createClass({
       })
     });
   },
+
   handleDelete(seriesIdx, installment, installmentIdx) {
     this.state.seriesSets[seriesIdx].installments.splice(installmentIdx, 1);
     $.ajax({
@@ -70,24 +76,33 @@ export default React.createClass({
       contentType: 'application/json'
     });
   },
-  handleEdit(seriesIdx, installmentIdx, installment) {
-    this.state.seriesSets[seriesIdx].installments[installmentIdx].editing = true;
-    this.forceUpdate();
+
+  handleEditToggle(seriesIdx, installmentIdx, installment) {
+    var editInstallment = update(
+      this.state.seriesSets,
+      {[seriesIdx]: {installments: {[installmentIdx]: {editing: {$set: !installment.editing}}}}}
+    );
+    this.setState({seriesSets: editInstallment});
   },
-  handleSave(seriesIdx, installmentIdx, name) {
-    this.state.seriesSets[seriesIdx].installments[installmentIdx].editing = false;
-    this.forceUpdate();
-  },
+
   handleNameEdit(seriesIdx, installmentIdx, event) {
-    this.state.seriesSets[seriesIdx].installments[installmentIdx].name = event.target.value;
-    this.forceUpdate();
+    var editInstallment = update(
+      this.state.seriesSets,
+      {[seriesIdx]: {installments: {[installmentIdx]: {$set: {name: event.target.value}}}}}
+    );
+    this.setState({seriesSets: editInstallment});
   },
+
   handleNewInput(event) {
     this.setState({newInstallment: event.target.value})
   },
+
   addInstallment(seriesIdx) {
-    this.state.seriesSets[seriesIdx].installments.push({name: this.state.newInstallment, complete: false});
-    this.forceUpdate();
+    var newInstallmentState = update(
+      this.state.seriesSets,
+      {[seriesIdx]: {installments: {$push: [{name: this.state.newInstallment, complete: false}]}}}
+    );
+    this.setState({seriesSets: newInstallmentState});
   },
 
   render() {
@@ -98,7 +113,19 @@ export default React.createClass({
     ];
     var render = [];
     for (var i=0; i < this.state.seriesSets.length; i++) {
-      render.push(<SeriesCard key={this.state.seriesSets[i].id} idx={i} data={this.state.seriesSets[i]} addInstallment={this.addInstallment} handleNewInput={this.handleNewInput} handleNameEdit={this.handleNewInput} handleNameEdit={this.handleNameEdit} handleSave={this.handleSave} handleEdit={this.handleEdit} handleDelete={this.handleDelete} handleComplete={this.handleComplete} />);
+      render.push(
+        <SeriesCard
+          key={this.state.seriesSets[i].id}
+          idx={i}
+          data={this.state.seriesSets[i]}
+          handleInputChange={this.handleInputChange}
+          addInstallment={this.addInstallment}
+          handleNameEdit={this.handleNameEdit}
+          handleEditToggle={this.handleEditToggle}
+          handleDelete={this.handleDelete}
+          handleComplete={this.handleComplete}
+        />
+      );
     }
     return (
       <div>
@@ -107,7 +134,7 @@ export default React.createClass({
           <h3>Create a New Series</h3>
           <form onSubmit={this.addSeries}>
             <label htmlFor='title'>Title:</label>
-            <input type='text' id='title' onChange={this.handleTitle} value={this.state.title} placeholder='Title' />
+            <input type='text' id='title' onChange={(event) => this.handleInputChange('title', event)} value={this.state.title} placeholder='Title' />
             <label htmlFor='type'>Type:</label>
             <Select
               name='type'
@@ -115,8 +142,8 @@ export default React.createClass({
               options={options}
               onChange={this.handleType}
               />
-            <label for='series'>Installments: (seperated by comma)</label>
-            <input type='text' id='installment' onChange={this.handleInstallments} value={this.state.installments} placeholder='Installments' />
+            <label htmlFor='series'>Installments: (seperated by comma)</label>
+            <input type='text' id='installment' onChange={(event) => this.handleInputChange('installments', event)} value={this.state.installments} placeholder='Installments' />
             <button id='submit' type='submit'>Submit</button>
           </form>
         </div>
