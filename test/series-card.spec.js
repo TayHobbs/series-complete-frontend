@@ -91,4 +91,10 @@ describe('<SeriesCard/>', function () {
     expect(wrapper.state().seriesSets[0].installments).to.have.length(2);
   });
 
+  it('shows series as complete if all installments are complete', () => {
+    const wrapper = mount(<SeriesCards />);
+    wrapper.setState({seriesSets: [{title: 'Lord of the Rings', installments: [{name: 'Fellowship', complete: true, id: 1}]}]});
+    expect(wrapper.find('.series-card .complete').text().trim()).to.equal('Complete');
+  });
+
 });

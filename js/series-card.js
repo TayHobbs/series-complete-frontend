@@ -3,6 +3,7 @@ import React from 'react';
 export default React.createClass({
   render() {
     var render = [];
+    const seriesComplete = this.props.data.installments.map((installment) => installment.complete).every((i) => i === true);
     this.props.data.installments.forEach((installment, idx) => {
       var editButton, editingInputState;
       if (installment.editing) {
@@ -26,6 +27,7 @@ export default React.createClass({
       <div>
         <div className='series-card'>
           <div id='title'>{this.props.data.title}</div>
+          <div className='complete'>{seriesComplete && this.props.data.installments.length ? 'Complete' : ''}</div>
           <br />
           {render}
           Add Installment:
