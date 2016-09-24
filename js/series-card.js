@@ -18,7 +18,7 @@ export default React.createClass({
         <div id={installment.name.replace(/ /, '-').toLowerCase()} key={installment.name}>
           <input type="checkbox" defaultChecked={installment.complete} onChange={() => this.props.handleComplete(installment)}/>
           {editingInputState}
-          <input type="button" className="delete-button" onClick={() => this.props.handleDelete(this.props.idx, installment, idx)} value="Delete" />
+          <input type="button" className="delete-button" onClick={() => this.props.handleDelete(installment, 'installment', this.props.idx, idx)} value="Delete" />
           {editButton}
         </div>
       );
@@ -28,6 +28,7 @@ export default React.createClass({
         <div className='series-card'>
           <div id='title'>{this.props.data.title}</div>
           <div className='complete'>{seriesComplete && this.props.data.installments.length ? 'Complete' : ''}</div>
+          <input type="button" className="series-delete-button" onClick={() => this.props.handleDelete(this.props.data, 'series', this.props.idx)} value="Delete Series"/>
           <br />
           {render}
           Add Installment:

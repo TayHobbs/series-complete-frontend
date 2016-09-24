@@ -68,11 +68,15 @@ export default React.createClass({
     });
   },
 
-  handleDelete(seriesIdx, installment, installmentIdx) {
-    this.state.seriesSets[seriesIdx].installments.splice(installmentIdx, 1);
+  handleDelete(model, type, seriesIdx, installmentIdx) {
+    if (type === 'installment') {
+      this.state.seriesSets[seriesIdx].installments.splice(installmentIdx, 1);
+    } else {
+      this.state.seriesSets.splice(seriesIdx, 1);
+    }
     $.ajax({
       method: 'DELETE',
-      url: `http://localhost:3000/installments/${installment.id}`,
+      url: `http://localhost:3000/${type}/${model.id}`,
       contentType: 'application/json'
     });
   },

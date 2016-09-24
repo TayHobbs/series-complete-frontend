@@ -97,4 +97,11 @@ describe('<SeriesCard/>', function () {
     expect(wrapper.find('.series-card .complete').text().trim()).to.equal('Complete');
   });
 
+  it('removes series from list when series deleted', () => {
+    const wrapper = mount(<SeriesCards />);
+    wrapper.setState({seriesSets: [{id: 1, title: 'Lord of the Rings', installments: [{name: 'Fellowship', complete: true, id: 1}]}]});
+    wrapper.find('.series-delete-button').simulate('click');
+    expect(wrapper.state().seriesSets).to.have.length(0);
+  });
+
 });
