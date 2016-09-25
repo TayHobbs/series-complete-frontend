@@ -69,11 +69,13 @@ export default React.createClass({
   },
 
   handleDelete(model, type, seriesIdx, installmentIdx) {
+    let seriesSets;
     if (type === 'installment') {
-      this.state.seriesSets[seriesIdx].installments.splice(installmentIdx, 1);
+      seriesSets = update(this.state.seriesSets, {[seriesIdx]: {installments: {$splice: [[installmentIdx, 1]]}}});
     } else {
-      this.state.seriesSets.splice(seriesIdx, 1);
+      seriesSets = update(this.state.seriesSets, {$splice: [[seriesIdx, 1]]});
     }
+    this.setState({seriesSets: seriesSets});
     $.ajax({
       method: 'DELETE',
       url: `http://localhost:3000/${type}/${model.id}`,
